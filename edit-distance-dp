@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+int editDistance(string s1, string s2, int** arr, int m, int n, int i, int j) {
+	// Write your code here
+ 
+
+    if(s1.length() == 0)
+        return s2.length();
+
+    if(s2.length() == 0)
+        return s1.length();
+
+    if(arr[i][j] != -1) {
+        return arr[i][j];
+    }
+    int ans;
+    if(s1[0] == s2[0]) {
+        ans = editDistance(s1.substr(1), s2.substr(1), arr, m, n, i+1, j+1);
+    }
+
+    else {
+        int opt1 = 1 + editDistance(s1.substr(1), s2, arr, m,n, i+1, j);           // insert in s2
+        int opt2 = 1 + editDistance(s1, s2.substr(1), arr, m, n, i, j+1);           // delete in s2
+        int opt3 = 1 + editDistance(s1.substr(1), s2.substr(1), arr, m, n, i+1, j+1); // replace in
+                                                                 // s2
+
+        ans = min(opt1, min(opt2, opt3));
+    }
+    arr[i][j] = ans;
+    return ans;
+}
+
+int editDistance(string s1, string s2) {
+    int n = s1.length();
+    int m = s2.length();
+
+    int** arr = new int*[n];
+    for(int i=0;i<n;i++) {
+        arr[i] = new int[m];
+        for(int j=0;j<m;j++) {
+            arr[i][j] = -1;
+        }
+    }
+
+
+    return editDistance(s1, s2, arr, n, m, 0, 0);
+}
