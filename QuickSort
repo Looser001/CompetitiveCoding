@@ -1,0 +1,68 @@
+/*
+	The function is called with the parameters:
+	quickSort(input, 0, size - 1);
+
+*/
+
+int partitionArray(int arr[], int start, int end) {
+	// Write your code here
+
+    int count = start;
+    int n = end-start+1;
+
+    for(int i=start+1;i<start+n;i++) {
+        if(arr[i] < arr[start]) {
+            count++;
+        }
+    }
+
+    int x = arr[count];
+    arr[count] = arr[start] ;
+    arr[start] = x;
+
+    int i=start;
+    int j=end;
+
+    while(i<count && j>count) {
+        if(arr[i] < arr[count]) {
+            i++;
+            if(arr[j] >= arr[count]) {
+                j--;
+            }
+        }
+        else {
+            if(arr[j] < arr[count]) {
+                int temp = arr[j] ;
+                arr[j] = arr[i] ;
+                arr[i] = temp ;
+                i++;
+                j--;
+            }
+            else {
+                j--;
+            }
+        }
+    }
+
+    return count;
+}
+
+void quickSort(int input[], int start, int end) {
+	/*
+		Don't write main().
+		Don't read input, it is passed as function argument.
+		Change in the given array itself.
+		Taking input and printing output is handled automatically.
+	*/
+
+    if(start >= end)
+        return;
+    
+    int count = partitionArray(input, start, end);
+
+    quickSort(input, start, count-1);
+    quickSort(input, count+1, end);
+
+
+
+}
