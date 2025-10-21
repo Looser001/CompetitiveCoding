@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std ;
+
+int solve(string s1, string s2, int i1, int i2, int** output)
+{
+	// Write your code here.
+    if(s1.length() == i1)
+        return 1001 ;
+    if(s2.length() == i2)
+        return 1 ;
+    
+    if(output[s1.size()-i1][s2.size()-i2] != -1)
+        return output[s1.size()-i1][s2.size()-i2] ;
+    
+    int option1 = solve(s1, s2, i1+1, i2, output) ;
+    int option2 ;
+    int x = s1[i1] ;
+    int index = -1 ;
+    for(int i=i2;i<s2.size();i++) {
+        if(s2[i] == x)
+        {
+            index = i ;
+            break ;
+        }
+    }
+    if(index == -1)
+        option2 = 1 ;
+    else
+    {
+        option2 = 1 + solve(s1, s2, i1+1, index+1, output) ;
+    }
+    
+    int ans = min(option1, option2) ;
+    output[s1.size()-i1][s2.size()-i2] = ans ;
+    
+    return ans ;
+}
+
+int solve(string s1, string s2) {
+    int** output = new int*[s1.size()+1] ;
+    for(int i=0;i<=s1.size();i++) {
+        output[i] = new int[s2.size()+1] ;
+        for(int j=0;j<=s2.size();j++) {
+            output[i][j] = -1 ;
+        }
+    }
+    return solve(s1,s2,0,0,output) ;
+}
